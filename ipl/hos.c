@@ -32,6 +32,8 @@
 #include "pkg2.h"
 #include "ff.h"
 
+#include "fusee_kernel_patches.h"
+
 #include "gfx.h"
 extern gfx_ctxt_t gfx_ctxt;
 extern gfx_con_t gfx_con;
@@ -193,6 +195,8 @@ typedef struct _launch_ctxt_t
 
 	u8 *svcperm;
 	u8 *debugmode;
+
+	int fuseepatch;
 } launch_ctxt_t;
 
 typedef struct _merge_kip_t
@@ -344,6 +348,16 @@ static int _config_debugmode(launch_ctxt_t *ctxt, const char *value)
 	}
 }
 
+static int _config_fuseepatch(launch_ctxt_t *ctxt, const char *value)
+{
+	if (*value == '1')
+	{
+		DPRINTF("Enabled Fusee patches\n");
+		ctxt->fuseepatch = 1;
+	}
+	return 1;
+}
+
 typedef struct _cfg_handler_t
 {
 	const char *key;
@@ -357,6 +371,7 @@ static const cfg_handler_t _config_handlers[] = {
 	{ "kip1", _config_kip1 },
 	{ "fullsvcperm", _config_svcperm },
 	{ "debugmode", _config_debugmode },
+	{ "fuseepatch", _config_fuseepatch },
 	{ NULL, NULL },
 };
 
@@ -454,6 +469,12 @@ int hos_launch(ini_sec_t *cfg)
 						*(vu32 *)(ctxt.kernel + kernel_patchset[0].off) = kernel_patchset[0].val;
 					if (ctxt.debugmode && kernel_patchset[1].off != 0xFFFFFFFF)
 						*(vu32 *)(ctxt.kernel + kernel_patchset[1].off) = kernel_patchset[1].val;
+				}
+
+				if (ctxt.fuseepatch)
+				{
+					// Patch the kernel with the fusee patches
+					package2_patch_kernel(&gfx_con, ctxt.pkg1_id->id, ctxt.kernel, ctxt.kernel_size);
 				}
 			}
 

@@ -16,6 +16,7 @@ OBJS = $(addprefix $(BUILD)/, \
 	clock.o \
 	cluster.o \
 	fuse.o \
+	fusee_kernel_patches.o \
 	gpio.o \
 	heap.o \
 	hos.o \
