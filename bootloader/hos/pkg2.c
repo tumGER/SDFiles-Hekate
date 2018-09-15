@@ -43,6 +43,7 @@ extern gfx_con_t gfx_con;
 #define FREE_CODE_OFF_1ST_302 0x494BC
 #define FREE_CODE_OFF_1ST_400 0x52890
 #define FREE_CODE_OFF_1ST_500 0x5C020
+#define FREE_CODE_OFF_1ST_600 0x5EE00
 
 #define ID_SND_OFF_100 0x23CC0
 #define ID_SND_OFF_200 0x3F134
@@ -50,6 +51,7 @@ extern gfx_con_t gfx_con;
 #define ID_SND_OFF_302 0x26080
 #define ID_SND_OFF_400 0x2AF64
 #define ID_SND_OFF_500 0x2AD34
+/* #define ID_SND_OFF_600 ??? */
 
 #define ID_RCV_OFF_100 0x219F0
 #define ID_RCV_OFF_200 0x3D1A8
@@ -57,6 +59,7 @@ extern gfx_con_t gfx_con;
 #define ID_RCV_OFF_302 0x240F0
 #define ID_RCV_OFF_400 0x28F6C
 #define ID_RCV_OFF_500 0x28DAC
+/* #define ID_RCV_OFF_600 ??? */
 
 static u32 PRC_ID_SND_100[] =
 {
@@ -129,6 +132,20 @@ static u32 PRC_ID_RCV_500[] =
 	0xF9403BED, 0x2A1503EA, 0xD37EF54A, 0xF86A69AA, 0x92FFFFE9, 0x8A090148, 0xD2FFFFE9, 0x8A09014A,
 	0xD2FFFFC9, 0xEB09015F, 0x54000040, 0xF9415B08, 0xF9406FEA
 };
+static u32 PRC_ID_SND_600[] =
+{
+	0xA9BF2FEA, 0xF94037EB, 0x2A1503EA, 0xD37EF54A, 0xF86A696A, 0x92FFFFE9, 0x8A090148, 0xD2FFFFE9,
+	0x8A09014A, 0xD2FFFFC9, 0xEB09015F, 0x54000100, 0xA9BF27E8, 0xF9400308, 0xF9401D08, 0xAA1803E0,
+	0xD63F0100, 0xA8C127E8, 0xAA0003E8, 0xA8C12FEA, 0xAA0803E0
+};
+#define FREE_CODE_OFF_2ND_600 (FREE_CODE_OFF_1ST_600 + sizeof(PRC_ID_SND_600) + 4)
+static u32 PRC_ID_RCV_600[] =
+{
+	0xA9BF2FEA, 0xF94043EB, 0x2A1503EA, 0xD37EF54A, 0xF86A696A, 0x92FFFFE9, 0x8A090148, 0xD2FFFFE9,
+	0x8A09014A, 0xD2FFFFC9, 0xEB09015F, 0x54000100, 0xA9BF27E8, 0xF9400308, 0xF9401D08, 0xAA1803E0,
+	0xD63F0100, 0xA8C127E8, 0xAA0003E8, 0xA8C12FEA, 0xAA0803E0
+};
+
 
 // Include kernel patches here, so we can utilize pkg1 id
 KERNEL_PATCHSET_DEF(_kernel_1_patchset,
@@ -223,6 +240,7 @@ static const pkg2_kernel_id_t _pkg2_kernel_ids[] =
 	{ 0xe0e8cdc4, _kernel_302_patchset }, //3.0.2
 	{ 0x485d0157, _kernel_4_patchset },   //4.0.0 - 4.1.0
 	{ 0xf3c363f2, _kernel_5_patchset },   //5.0.0 - 5.1.0
+
 	{ 0, 0 }                              //End.
 };
 
